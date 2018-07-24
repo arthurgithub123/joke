@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>joke-index</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+    <button ion-item *ngFor="let joke of jokes | async" (click)="goToJokeInfoPage(joke.jokeInfoKey)">
+      {{ joke.description }}
+    </button>
+
+    <ion-item>
+      <button ion-button (click)="goToJokeRegisterPage()">Adicionar</button>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
+

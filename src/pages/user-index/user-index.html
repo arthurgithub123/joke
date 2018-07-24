@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>user-index</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+
+    <ion-item *ngFor="let user of users | async" (click)="goToJokeIndexPage(user.key)">
+      <ion-avatar item-start>
+        <img [src]="user.profileImageUrl">
+      </ion-avatar>
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.shortDescription }}</p>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-item>
+    <button ion-button (click)="goToUserRegisterPage()">Cadastrar</button>
+  </ion-item>
+
+</ion-content>

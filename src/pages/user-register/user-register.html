@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>user-register</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+<ion-list>
+
+    <ion-item>
+      <ion-label floating>Nome</ion-label>
+      <ion-input type="text" [(ngModel)]="user.name" name="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Descrição</ion-label>
+      <ion-input type="text" [(ngModel)]="user.shortDescription" name="shortDescription"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button (click)="selectImage()">Imagem de perfil</button>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button (click)="saveUser()">Salvar</button>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
