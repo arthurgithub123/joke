@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { JokeRegisterPage } from '../joke-register/joke-register';
 import { Observable } from 'rxjs';
 import { JokeProvider } from '../../providers/joke/joke';
-import { JokeInfoPage } from '../joke-info/joke-info';
 
 @IonicPage()
 @Component({
@@ -30,12 +28,12 @@ export class JokeIndexPage {
 
   goToJokeRegisterPage(){
 
-    this.navCtrl.push(JokeRegisterPage, { userKey: this.userKey });
+    this.navCtrl.push('JokeRegisterPage', { userKey: this.userKey });
   }
 
   goToJokeInfoPage(jokeInfoKey){
 
-    this.navCtrl.push(JokeInfoPage, { jokeInfoKey: jokeInfoKey });
+    this.navCtrl.push('JokeInfoPage', { jokeInfoKey: jokeInfoKey });
   }
 
   getJokes(){

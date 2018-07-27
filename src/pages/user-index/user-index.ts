@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { UserRegisterPage } from '../user-register/user-register';
 import { Observable } from 'rxjs/Observable';
 import { UserProvider } from '../../providers/user/user';
-import { JokeIndexPage } from '../joke-index/joke-index';
 
 @IonicPage()
 @Component({
@@ -29,12 +27,12 @@ export class UserIndexPage {
   }
 
   goToUserRegisterPage(){
-    this.navCtrl.push(UserRegisterPage);
+    this.navCtrl.push('UserRegisterPage');
   }
 
   goToJokeIndexPage(userKey){
 
-    this.navCtrl.push(JokeIndexPage, { userKey: userKey });
+    this.navCtrl.push('JokeIndexPage', { userKey: userKey });
   }
 }
 

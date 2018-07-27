@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { JokeProvider } from '../../providers/joke/joke';
-import { Observable } from 'rxjs';
 
 @IonicPage()
 @Component({
