@@ -13,7 +13,7 @@ export class UserProvider {
   constructor(private camera: Camera, private storage: AngularFireStorage,
               private db: AngularFireDatabase, private alertCtrl: AlertController) { }
 
-async captureImage() {
+  async captureImage() {
     const options: CameraOptions = {
       quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -25,48 +25,12 @@ async captureImage() {
     return await this.camera.getPicture(options)
   }
 
-  createUploadTask(file: string, fileName: string) {
+  async saveUser(userName: string, selectedImage: string, shortDescription: string){
 
-    let image = 'data:image/jpg;base64,' + file;
-
-    this.storage.ref('profile/' + fileName).putString(image, 'data_url');
-  }
-
-  uploadHandler(file, fileName) {
-
-   const confirm = this.alertCtrl.create({
-
-      title: 'Usar imagem selecionada ?',
-      message: '',
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => { }
-        },
-        {
-          text: 'OK',
-          handler: () => {
-
-            this.createUploadTask(file, fileName);
-          }
-        }
-      ]
-    });
-
-    confirm.present();
-
-   //this.createUploadTask(base64);
-  }
-
-  saveUser(userName: string, fileName: string, shortDescription: string) {
-
-    if (fileName == '' || fileName == null || fileName == undefined)
-    {
+    if (selectedImage == '' || selectedImage == null || selectedImage == undefined){
 
       const user = this.db.list('users').push({ name: userName, profileImageName: 'profile_noimage.jpg', shortDescription: shortDescription, profileImageUrl: '' });
       let pushedUserKey = user.key;
-
-      let imageUrl: Observable<string | null>;
 
       const ref = this.storage.ref('profile/profile_noimage.jpg');
 
@@ -75,14 +39,20 @@ async captureImage() {
         this.db.list('users').update(pushedUserKey, { profileImageUrl: x });
       });
     }
-    else
-    {
+    else {
 
+      // creates file image name and save image in firebase
+      let fileName = `image_${ new Date().getTime() }.jpg`;
+
+      let image = 'data:image/jpg;base64,' + selectedImage;
+
+      await this.storage.ref('profile/' + fileName).putString(image, 'data_url');
+
+      // saves user and get its key to update profileImageUrl wich was saved with no value
       const user = this.db.list('users').push({ name: userName, profileImageName: fileName, shortDescription: shortDescription, profileImageUrl: '' });
       let pushedUserKey = user.key;
 
-      let imageUrl: Observable<string | null>;
-
+      // gets saved image downloadURL by its path wich are folder and file name
       const ref = this.storage.ref('profile/' + fileName);
 
       ref.getDownloadURL().subscribe((x) => {
