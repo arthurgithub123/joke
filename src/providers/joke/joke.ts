@@ -25,41 +25,9 @@ export class JokeProvider {
     return await this.camera.getPicture(options)
   }
 
-  createUploadTask(file: string, fileName: string) {
+  async saveJoke(selectedImage: string, jokeDescription: string, jokeText: string, userKey: string){
 
-    let image = 'data:image/jpg;base64,' + file;
-
-    this.storage.ref('joke/' + fileName).putString(image, 'data_url');
-  }
-
-  // show a confirm alert to know if the user wants the selected image
-  uploadHandler(file, fileName) {
-
-    const confirm = this.alertCtrl.create({
-
-      title: 'Usar imagem selecionada ?',
-      message: '',
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => { }
-        },
-        {
-          text: 'OK',
-          handler: () => {
-
-            this.createUploadTask(file, fileName);
-          }
-        }
-      ]
-    });
-
-    confirm.present();
-  }
-
-  saveJoke(fileName: string, jokeDescription: string, jokeText: string, userKey: string){
-
-    if(fileName == '' || fileName == null || fileName == undefined){
+    if(selectedImage == '' || selectedImage == null || selectedImage == undefined){
 
       const joke = this.db.list('jokes').push({ description: jokeDescription, userKey: userKey, jokeInfoKey: '' });
       let pushedJokeKey = joke.key;
@@ -82,6 +50,13 @@ export class JokeProvider {
       const joke = this.db.list('jokes').push({ description: jokeDescription, userKey: userKey, jokeInfoKey: '' });
       let pushedJokeKey = joke.key;
 
+      // creates image name and save in firebase
+      const fileName = `image_${ new Date().getTime() }.jpg`;
+
+      let image = 'data:image/jpg;base64,' + selectedImage;
+
+      await this.storage.ref('joke/' + fileName).putString(image, 'data_url');
+
       const jokeInfo = this.db.list('jokeInfo').push({
 
         description:    jokeDescription,
@@ -97,7 +72,6 @@ export class JokeProvider {
       this.db.list('jokes').update(pushedJokeKey, { jokeInfoKey: pushedJokeInfoKey });
 
       // get image by name to get its download url and set jokeInfo's imageUrl property
-      let imageUrl: Observable<string | null>;
       const ref = this.storage.ref('joke/' + fileName);
 
       ref.getDownloadURL().subscribe(x => {

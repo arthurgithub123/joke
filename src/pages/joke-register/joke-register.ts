@@ -26,26 +26,15 @@ export class JokeRegisterPage {
   userKey;
 
   selectedImage;
-  fileName;
 
   async selectImage(){
 
     this.selectedImage = await this.jokeProvider.captureImage();
-
-    this.uploadHandler();
-  }
-
-  uploadHandler(){
-
-    const fileName = `image_${ new Date().getTime() }.jpg`;
-    this.fileName = fileName;
-
-    this.jokeProvider.uploadHandler(this.selectedImage, fileName);
   }
 
   saveJoke(){
 
-    this.jokeProvider.saveJoke(this.fileName, this.joke.description, this.joke.text, this.userKey);
+    this.jokeProvider.saveJoke(this.selectedImage, this.joke.description, this.joke.text, this.userKey);
   }
 
 }
