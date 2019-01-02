@@ -34,5 +34,9 @@ export class UserIndexPage {
 
     this.navCtrl.push('JokeIndexPage', { userKey: userKey });
   }
-}
 
+  goToUserEditPage(userKey){
+
+  this.navCtrl.push('UserEditPage', { userkey: userKey });
+  }
+}

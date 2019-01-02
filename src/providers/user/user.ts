@@ -71,4 +71,43 @@ export class UserProvider {
     );
   }
 
+  getUser(userkey){
+
+    return this.db.object('users/' + userkey).valueChanges();
+  }
+
+  async editUser(userkey, user, selectedImage){
+
+    if(selectedImage == '' || selectedImage == null || selectedImage == undefined){
+
+      this.db.list('users').update(userkey, { name: user.name, shortDescription: user.shortDescription });
+    }
+    else {
+
+      let fileName = `image_${ new Date().getTime() }.jpg`;
+
+      let image = 'data:image/jpg;base64,' + selectedImage;
+
+      await this.storage.ref('profile/' + fileName).putString(image, 'data_url');
+
+      const ref = this.storage.ref('profile/' + fileName);
+
+      if(user.profileImageName == 'profile_noimage.jpg'){
+
+        ref.getDownloadURL().subscribe(x => {
+
+          this.db.list('users').update(userkey, { name: user.name, shortDescription: user.shortDescription, profileImageName: fileName, profileImageUrl: x });
+        });
+      }
+      else {
+
+        this.storage.ref('profile/' + user.profileImageName).delete();
+
+        ref.getDownloadURL().subscribe(x => {
+
+          this.db.list('users').update(userkey, { name: user.name, shortDescription: user.shortDescription, profileImageName: fileName, profileImageUrl: x });
+        });
+      }
+    }
+  }
 }

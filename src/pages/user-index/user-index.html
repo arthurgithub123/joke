@@ -20,7 +20,7 @@
           <p>{{ user.shortDescription }}</p>
         </ion-item>
         <ion-item-options side="right">
-          <button ion-button color="light">
+          <button ion-button color="light" (click)="goToUserEditPage(user.key)">
             <ion-icon name="create"></ion-icon>
             Alterar
           </button>
